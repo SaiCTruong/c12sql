@@ -14,7 +14,7 @@
         <c:set var="sqlStatement" value="select * from User" />
     </c:if>
        
-    <h1>The SQL Gateway</h1>
+    <h1>The SQL Gatewayy</h1>
     <p>Enter an SQL statement and click the Execute button.</p>
     
     <p><b>SQL statement:</b></p>

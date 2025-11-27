@@ -1,13 +1,14 @@
 package murach.sql;
 
 import java.io.*;
-import jakarta.servlet.*; // Đã sửa từ javax
+import jakarta.servlet.*;
 import jakarta.servlet.http.*;
-//import jakarta.servlet.annotation.WebServlet; // Giữ lại nếu cần
+import jakarta.servlet.annotation.WebServlet;
 import java.sql.*;
 import murach.data.ConnectionPool; 
 import murach.data.SQLUtil; 
 
+@WebServlet("/sqlGateway")
 public class SqlGatewayServlet extends HttpServlet {
 
     @Override
@@ -17,6 +18,9 @@ public class SqlGatewayServlet extends HttpServlet {
 
         String sqlStatement = request.getParameter("sqlStatement");
         String sqlResult = "";
+        if (sqlStatement == null) {
+            sqlStatement = "";
+        }
         
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = null;
@@ -24,7 +28,7 @@ public class SqlGatewayServlet extends HttpServlet {
         ResultSet resultSet = null;
 
         try {
-            connection = pool.getConnection(); // Lấy kết nối từ Pool
+            connection = pool.getConnection(); 
             statement = connection.createStatement();
 
             String sqlStatementTrimmed = sqlStatement.trim();
@@ -32,24 +36,22 @@ public class SqlGatewayServlet extends HttpServlet {
                 String sqlType = sqlStatementTrimmed.substring(0, 6);
 
                 if (sqlType.equalsIgnoreCase("select")) {
-                    // Chạy lệnh SELECT
                     resultSet = statement.executeQuery(sqlStatement);
                     sqlResult = SQLUtil.getHtmlTable(resultSet);
                 } else {
-                    // Chạy lệnh INSERT/UPDATE/DELETE/DDL
                     int i = statement.executeUpdate(sqlStatement);
-                    if (i == 0) {
+                    if (i == 0) { 
                         sqlResult = "<p>The statement executed successfully.</p>";
-                    } else {
+                    } else { 
                         sqlResult = "<p>The statement executed successfully.<br>"
                                 + i + " row(s) affected.</p>";
                     }
                 }
             }
         } catch (SQLException e) {
-            sqlResult = "Error executing the SQL statement: <br>" + e.getMessage();
+            sqlResult = "Error executing the SQL statement: <br>"
+                    + e.getMessage() + "</p>";
         } finally {
-            // Đóng tài nguyên và trả kết nối về Pool
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
@@ -69,6 +71,7 @@ public class SqlGatewayServlet extends HttpServlet {
                 .forward(request, response);
     }
     
+    // THÊM: Phương thức doGet để xử lý truy cập trực tiếp từ trình duyệt
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

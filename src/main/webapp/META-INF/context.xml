@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context>
-    <Resource name="jdbc/murach" 
-              auth="Container" 
-              type="javax.sql.DataSource"
-              maxTotal="100" 
-              maxIdle="30" 
-              maxWaitMillis="10000"
-              username="root" 
-              password="12345" 
-              driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/murach"/>
+<Context path="/C12sql">
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="30" maxTotal="100" maxWaitMillis="10000" name="jdbc/murach" password="12345" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/murach" username="root"/>
 </Context>
