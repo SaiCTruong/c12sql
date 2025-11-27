@@ -1,0 +1,7 @@
+# Bỏ qua các file build của Maven
+/target/
+
+# Bỏ qua các file rác của NetBeans
+/nbproject/
+/nbactions.xml
+/nb-configuration.xml
